@@ -63,8 +63,8 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center py-6">
-      <div className="bg-white shadow-md rounded-lg w-full max-w-md p-6">
+    <div className="min-h-screen bg-gray-100 flex items-start sm:items-center justify-center py-6">
+      <div className="m-2 bg-white shadow-md rounded-lg w-full max-w-md p-6">
         <h1 className="text-2xl font-bold text-center mb-6">To-Do List</h1>
 
         {/* Input field and Add button */}
