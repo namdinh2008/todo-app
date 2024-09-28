@@ -7,6 +7,7 @@ const HomePage = () => {
   const [tasks, setTasks] = useState([]);
   const [editTaskId, setEditTaskId] = useState(null);
   const [editText, setEditText] = useState('');
+  const [removingTaskId, setRemovingTaskId] = useState(null); // Track which task is being removed
 
   useEffect(() => {
     const storedTasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -25,7 +26,11 @@ const HomePage = () => {
   };
 
   const handleDeleteTask = (id) => {
-    setTasks(tasks.filter(task => task.id !== id));
+    setRemovingTaskId(id);
+    setTimeout(() => {
+      setTasks(tasks.filter(task => task.id !== id));
+      setRemovingTaskId(null);
+    }, 300); // Set delay for transition
   };
 
   const handleToggleTask = (id) => {
@@ -62,10 +67,14 @@ const HomePage = () => {
     }
   };
 
+  const completedTasks = tasks.filter(task => task.completed).length;
+  const totalTasks = tasks.length;
+  const progress = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-start sm:items-center justify-center py-6">
       <div className="m-2 bg-white shadow-md rounded-lg w-full max-w-md p-6">
-        <h1 className="text-2xl font-bold text-center mb-6">To-Do List</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">ToDo List</h1>
 
         {/* Input field and Add button */}
         <div className="flex mb-4">
@@ -79,7 +88,7 @@ const HomePage = () => {
           />
           <button
             onClick={handleAddTask}
-            className= "bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 ring-blue-500 rounded-r-lg"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 ring-blue-500 rounded-r-lg"
           >
             <MdAdd />
           </button>
@@ -90,9 +99,9 @@ const HomePage = () => {
           {tasks.map((task) => (
             <li
               key={task.id}
-              className={`flex justify-between items-center p-2 rounded-lg ${
-                task.completed ? 'bg-green-100 line-through' : 'bg-gray-50'
-              }`}
+              className={`flex justify-between items-center p-2 rounded-lg transition-opacity duration-300 ease-in-out ${
+                removingTaskId === task.id ? 'opacity-0' : ''
+              } ${task.completed ? 'bg-green-100 line-through' : 'bg-gray-50'}`}
             >
               {/* Checkbox to mark the task as complete */}
               <input
@@ -147,6 +156,27 @@ const HomePage = () => {
             </li>
           ))}
         </ul>
+
+        {/* Conditionally render the progress bar if there are tasks */}
+        {totalTasks > 0 && (
+          <div className="mt-4">
+            <div className="w-full bg-gray-200 h-10">
+              <div
+                className="h-10 transition-all duration-700 ease-in-out"
+                style={{
+                  width: `${progress}%`,
+                  background: `#2BC0E4`,  /* fallback for old browsers */
+                  background: `-webkit-linear-gradient(to right, #EAECC6, #2BC0E4)`,  /* Chrome 10-25, Safari 5.1-6 */
+                  background: `linear-gradient(to right, #EAECC6, #2BC0E4)` /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                }}
+              ></div>
+              <span className="text-sm text-black mt-2 block text-center relative bottom-10">
+                {completedTasks} of {totalTasks} tasks done ({Math.round(progress)}%)
+              </span>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
