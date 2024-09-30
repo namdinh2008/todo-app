@@ -71,6 +71,14 @@ const HomePage = () => {
   const totalTasks = tasks.length;
   const progress = totalTasks ? (completedTasks / totalTasks) * 100 : 0;
 
+  const getProgressBarColor = () => {
+    if (progress === 100) return '#00FF00'; // All tasks completed
+    if (progress > 75) return '#0099FF';     // More than 75% completed
+    if (progress > 50) return '#FF00FF';   // More than 50% completed
+    if (progress > 25) return 'yellow';   // More than 25% completed
+    return 'red';                         // Less than 25% completed
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex items-start sm:items-center justify-center py-6">
       <div className="m-2 bg-white shadow-md rounded-lg w-full max-w-md p-6">
@@ -157,26 +165,24 @@ const HomePage = () => {
           ))}
         </ul>
 
-        {/* Conditionally render the progress bar if there are tasks */}
-        {totalTasks > 0 && (
+                {/* Progress Bar */}
+                {totalTasks > 0 && (
           <div className="mt-4">
             <div className="w-full bg-gray-200 h-10">
               <div
                 className="h-10 transition-all duration-700 ease-in-out"
                 style={{
                   width: `${progress}%`,
-                  background: `#2BC0E4`,  /* fallback for old browsers */
-                  background: `-webkit-linear-gradient(to right, #EAECC6, #2BC0E4)`,  /* Chrome 10-25, Safari 5.1-6 */
-                  background: `linear-gradient(to right, #EAECC6, #2BC0E4)` /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
+                  backgroundColor: getProgressBarColor(),
                 }}
               ></div>
               <span className="text-sm text-black mt-2 block text-center relative bottom-10">
-                {completedTasks} of {totalTasks} tasks done ({Math.round(progress)}%)
+                {completedTasks} / {totalTasks} tasks done ({Math.round(progress)}%)
               </span>
             </div>
           </div>
         )}
+
       </div>
     </div>
   );
