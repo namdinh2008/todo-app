@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FaTrash, FaEdit, FaSave } from 'react-icons/fa';
 import { MdAdd } from "react-icons/md";
 
-const HomePage = () => {
+const HomePage = ({ handleLogout }) => {
   const [newTask, setNewTask] = useState('');
   const [tasks, setTasks] = useState([]);
   const [editTaskId, setEditTaskId] = useState(null);
@@ -65,6 +65,15 @@ const HomePage = () => {
     if (e.key === 'Enter') {
       handleSaveTask(id);
     }
+  };
+
+  const handleRemoveChecked = () => {
+    setTasks(tasks.filter(task => !task.completed));
+  };
+
+  // Handle "Log Out"
+  const handleUserLogout = () => {
+    handleLogout(); // This will trigger the logout function passed from the parent component
   };
 
   const completedTasks = tasks.filter(task => task.completed).length;
@@ -182,6 +191,22 @@ const HomePage = () => {
             </div>
           </div>
         )}
+
+         {/* Remove Checked and Logout buttons */}
+         <div className="flex justify-between mt-4">
+          <button
+            onClick={handleRemoveChecked}
+            className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+          >
+            Remove Checked
+          </button>
+          <button
+            onClick={handleUserLogout}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+          >
+            Log Out
+          </button>
+        </div>
 
       </div>
     </div>
