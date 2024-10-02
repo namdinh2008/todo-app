@@ -198,7 +198,7 @@ const HomePage = ({ handleLogout }) => {
             onClick={handleRemoveChecked}
             className="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-600"
           >
-            Remove Checked
+            Clear done
           </button>
           <button
             onClick={handleUserLogout}

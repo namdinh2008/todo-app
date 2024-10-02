@@ -3,10 +3,26 @@ import { auth } from './firebase';
 import { signOut, onAuthStateChanged } from 'firebase/auth'; 
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import HomePage from './components/HomePage/HomePage';  // Import your To-Do list component
-import LoginPage from './components/LoginPage/LoginPage';  // Import the Login component
+import LoginPage from './components/LoginPage/LoginPage';
 
 const App = () => {
   const [user, setUser] = useState(null); // Track the logged-in user state
+
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in
+        console.log("User signed in:", user);
+      } else {
+        // User is signed out
+        console.log("User signed out");
+      }
+    });
+
+    // Cleanup the subscription on unmount
+    return () => unsubscribe();
+  }, []);
 
   // Monitor user authentication state changes
   useEffect(() => {
