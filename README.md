@@ -2,6 +2,10 @@
 
 A modern, responsive Todo application built with React and Firebase, featuring user authentication and real-time data storage.
 
+## 🌟 Live Demo
+
+Experience the Todo App in: [Live Demo](https://namdinh-simple-todo-list-app.netlify.app/)
+
 ## 🌟 Features
 
 - **User Authentication**:
